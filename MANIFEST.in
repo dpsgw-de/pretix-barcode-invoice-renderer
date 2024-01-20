@@ -1,0 +1,5 @@
+recursive-include pretix_barcode_invoice_renderer/static *
+recursive-include pretix_barcode_invoice_renderer/templates *
+recursive-include pretix_barcode_invoice_renderer/locale *
+include LICENSE
+exclude .gitlab-ci.yml

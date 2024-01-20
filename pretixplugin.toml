@@ -1,0 +1,5 @@
+[plugin]
+package = "pretix-barcode-invoice-renderer"
+modules = [ "pretix_barcode_invoice_renderer" ]
+marketplace_name = "barcode-invoice-renderer"
+
