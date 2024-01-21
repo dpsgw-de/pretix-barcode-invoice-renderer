@@ -40,27 +40,8 @@ class MyInvoiceRenderer(Modern1Renderer):
     def _draw_barcode(self, canvas: Canvas):
         inv_barcode = barcode.createBarcodeDrawing("Code128", value="38020" + self.invoice.number, humanReadable=True, barWidth=0.31*mm, barHeight=18.5*mm, quiet=False)
         posX = self.pagesize[0] - inv_barcode.width - self.right_margin
-        posY = self.pagesize[1] - 95*mm  # Labels for metadata (invoice number, invoice date) etc. are at 100*mm from top
+        posY = self.pagesize[1] - 90*mm  # Labels for metadata (invoice number, invoice date) etc. are at 100*mm from top
         inv_barcode.drawOn(canvas,posX,posY)
-        canvas.circle(self.pagesize[0],posY, 2*mm, stroke=1, fill=1)
-        canvas.circle(self.pagesize[0]-self.right_margin,posY, 2*mm, stroke=1, fill=1)
-        canvas.circle(self.pagesize[0]-self.right_margin-inv_barcode.width,posY, 2*mm, stroke=1, fill=1)
-        debug_text = ("inv_barcode: " + str(inv_barcode.width) + " x " \
-                + str(inv_barcode.height) + "<br />mm: " + str(mm) + "<br />" + "inv_barcode: " + str(inv_barcode.width / mm) + "mm x " + str(inv_barcode.height / mm) + "mm")
-        p = Paragraph(debug_text, style=self.stylesheet['Sender'])
-        p.wrapOn(canvas, 75*mm, 100*mm)
-        p.drawOn(canvas, 25*mm, 55*mm)
-        p = Paragraph("Code version 20", style=self.stylesheet['Sender'])
-        p.wrapOn(canvas, 100*mm, 100*mm)
-        p.drawOn(canvas, 25*mm, 40*mm)
-        meta_data = self.event.meta_data
-        p = Paragraph("event: " + pprint.pformat(meta_data), style=self.stylesheet['Sender'])
-        p.wrapOn(canvas, 100*mm, 100*mm)
-        p.drawOn(canvas, 25*mm, 35*mm)
-        ktr = meta_data['KTR']
-        p = Paragraph("event: " + pprint.pformat(ktr), style=self.stylesheet['Sender'])
-        p.wrapOn(canvas, 100*mm, 100*mm)
-        p.drawOn(canvas, 25*mm, 30*mm)
 
     # This method is mostly copied from Modern1Renderer, only adds an additional field for metadata
     def _draw_metadata(self, canvas):
@@ -130,8 +111,9 @@ class MyInvoiceRenderer(Modern1Renderer):
                 if kn is not None and len(kn) > 0:
                     objects += [
                         _draw('KN', kn,
-                              value_size, self.left_margin + 120 * mm, date_x - self.left_margin - 120 * mm - 5 * mm),
+                              value_size, self.left_margin + 122 * mm, date_x - self.left_margin - 122 * mm - 5 * mm),
                     ]
+            # End of addition
 
             if all(objects):
                 for o in objects:
