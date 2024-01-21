@@ -50,12 +50,17 @@ class MyInvoiceRenderer(Modern1Renderer):
         p = Paragraph(debug_text, style=self.stylesheet['Sender'])
         p.wrapOn(canvas, 75*mm, 100*mm)
         p.drawOn(canvas, 25*mm, 55*mm)
-        p = Paragraph("Code version 18", style=self.stylesheet['Sender'])
+        p = Paragraph("Code version 20", style=self.stylesheet['Sender'])
         p.wrapOn(canvas, 100*mm, 100*mm)
         p.drawOn(canvas, 25*mm, 40*mm)
-        p = Paragraph("event: " + pprint.pformat(self.event.meta_data), style=self.stylesheet['Sender'])
+        meta_data = self.event.meta_data
+        p = Paragraph("event: " + pprint.pformat(meta_data), style=self.stylesheet['Sender'])
         p.wrapOn(canvas, 100*mm, 100*mm)
         p.drawOn(canvas, 25*mm, 35*mm)
+        ktr = meta_data['KTR']
+        p = Paragraph("event: " + pprint.pformat(ktr), style=self.stylesheet['Sender'])
+        p.wrapOn(canvas, 100*mm, 100*mm)
+        p.drawOn(canvas, 25*mm, 30*mm)
 
     # This method is mostly copied from Modern1Renderer, only adds an additional field for metadata
     def _draw_metadata(self, canvas):
@@ -102,15 +107,31 @@ class MyInvoiceRenderer(Modern1Renderer):
             if self.invoice.is_cancellation:
                 objects += [
                     _draw(pgettext('invoice', 'Cancellation number'), self.invoice.number,
-                          value_size, self.left_margin + 50 * mm, 45 * mm),
+                          value_size, self.left_margin + 35 * mm, 35 * mm),
                     _draw(pgettext('invoice', 'Original invoice'), self.invoice.refers.number,
-                          value_size, self.left_margin + 100 * mm, date_x - self.left_margin - 100 * mm - 5 * mm),
+                          value_size, self.left_margin + 70 * mm, date_x - self.left_margin - 70 * mm - 5 * mm),
                 ]
             else:
                 objects += [
                     _draw(pgettext('invoice', 'Invoice number'), self.invoice.number,
-                          value_size, self.left_margin + 70 * mm, date_x - self.left_margin - 70 * mm - 5 * mm),
+                          value_size, self.left_margin + 60 * mm, date_x - self.left_margin - 60 * mm - 5 * mm),
                 ]
+
+            # Here ist the addition
+            if self.event.meta_data:
+                ktr = self.event.meta_data['KTR']
+                if ktr is not None and len(ktr) > 0:
+                    objects += [
+                        _draw('KTR', ktr,
+                              value_size, self.left_margin + 105 * mm, date_x - self.left_margin - 105 * mm - 5 * mm),
+                    ]
+            if self.event.meta_data:
+                kn = self.event.meta_data['KN']
+                if kn is not None and len(kn) > 0:
+                    objects += [
+                        _draw('KN', kn,
+                              value_size, self.left_margin + 120 * mm, date_x - self.left_margin - 120 * mm - 5 * mm),
+                    ]
 
             if all(objects):
                 for o in objects:
