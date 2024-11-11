@@ -28,7 +28,7 @@ requires = [
 ]
 
 [project.urls]
-homepage = "https://github.com/dpsgw-de/pretix-barcode-invoice-renderer.git"
+homepage = "https://github.com/dpsgw-de/pretix-barcode-invoice-renderer"
 repository = "https://github.com/dpsgw-de/pretix-barcode-invoice-renderer.git"
 
 [tool.setuptools]

@@ -38,7 +38,7 @@ class MyInvoiceRenderer(Modern1Renderer):
         canvas.restoreState()
 
     def _draw_barcode(self, canvas: Canvas):
-        inv_barcode = barcode.createBarcodeDrawing("Code128", value="38020" + self.invoice.number, humanReadable=True, barWidth=0.31*mm, barHeight=18.5*mm, quiet=False)
+        inv_barcode = barcode.createBarcodeDrawing("Code128", value="SB5320" + self.invoice.number, humanReadable=True, barWidth=0.31*mm, barHeight=18.5*mm, quiet=False)
         posX = self.pagesize[0] - inv_barcode.width - self.right_margin
         posY = self.pagesize[1] - 90*mm  # Labels for metadata (invoice number, invoice date) etc. are at 100*mm from top
         inv_barcode.drawOn(canvas,posX,posY)
@@ -99,14 +99,14 @@ class MyInvoiceRenderer(Modern1Renderer):
                 ]
 
             # Here ist the addition
-            if self.event.meta_data:
+            if self.event.meta_data and 'KTR' in self.event.meta_data:
                 ktr = self.event.meta_data['KTR']
                 if ktr is not None and len(ktr) > 0:
                     objects += [
                         _draw('KTR', ktr,
                               value_size, self.left_margin + 105 * mm, date_x - self.left_margin - 105 * mm - 5 * mm),
                     ]
-            if self.event.meta_data:
+            if self.event.meta_data and 'KN' in self.event.meta_data:
                 kn = self.event.meta_data['KN']
                 if kn is not None and len(kn) > 0:
                     objects += [
